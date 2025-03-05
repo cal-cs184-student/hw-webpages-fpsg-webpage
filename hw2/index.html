@@ -28,7 +28,7 @@
 	<body>
 		<div class="container">
 		<h1>CS184/284A Spring 2025 Homework 2 Write-Up</h1>
-		<div style="text-align: center;">Names: </div>
+		<div style="text-align: center;">Names: Shashank Anand and Yongye Zhu </div>
 
 		<br>
 
@@ -37,11 +37,6 @@
 		<br>
 		
 		Link to GitHub repository: <a href="https://github.com/cal-cs184-student/sp25-hw2-fpsg-hw2">github.com/cal-cs184-student/sp25-hw2-fpsg-hw2</a>
-
-		<figure>
-			<img src="teapot.png" alt="Teapot" style="width:50%"/>
-			<figcaption>You can add images with captions!</figcaption>
-		</figure>
 
 		<!--
 		We've already added one heading per part, to make your write-up as navigable when grading. Please fit your write-up within these sections!
@@ -56,36 +51,56 @@
       We implement evaluateStep function by iterating the first n-1 points in the array. For each point, we use linear interpolation between the current point and the next point, and push the generating point into the result array. After one iteration, we return the result array.
       
       <h4>Screenshots</h4>
-		<p>Here is an example 2x2 gridlike structure using an HTML table. Each <b>tr</b> is a row and each <b>td</b> is a column in that row. You might find this useful for framing and showing your result images in an organized fashion.</p>
-		<div style="display: flex; flex-direction: column; align-items: center;">
-			<table style="width: 100%; text-align: center; border-collapse: collapse;">
-			  <tr>
-				<td style="text-align: center;">
-				  <img src="teapot.png" width="400px"/>
-				  <figcaption>Caption goes here.</figcaption>
-				</td>
-				<td style="text-align: center;">
-				  <img src="teapot.png" width="400px"/>
-				  <figcaption>Caption goes here.</figcaption>
-				</td>
-			  </tr>
-			  <tr>
-				<td style="text-align: center;">
-				  <img src="teapot.png" width="400px"/>
-				  <figcaption>Caption goes here.</figcaption>
-				</td>
-				<td style="text-align: center;">
-				  <img src="teapot.png" width="400px"/>
-				  <figcaption>Caption goes here.</figcaption>
-				</td>
-			  </tr>
-			</table>
-		</div>
+	      <div style="display: flex; flex-direction: column; align-items: center;">
+		      <table style="width: 100%; text-align: center; border-collapse: collapse;">
+		        <tr>
+			      <td style="text-align: center;">
+			        <img src="bezier_0.png" width="400px"/>
+			        <figcaption>Iteration 0.</figcaption>
+			      </td>
+			      <td style="text-align: center;">
+			        <img src="bezier_1.png" width="400px"/>
+			        <figcaption>Iteration 1.</figcaption>
+			      </td>
+			      <td style="text-align: center;">
+			        <img src="bezier_2.png" width="400px"/>
+			        <figcaption>Iteration 2.</figcaption>
+			      </td>
+			      <td style="text-align: center;">
+			        <img src="bezier_3.png" width="400px"/>
+			        <figcaption>Iteration 3.</figcaption>
+			      </td>
+		        </tr>
+		        <tr>
+			      <td style="text-align: center;">
+			        <img src="bezier_4.png" width="400px"/>
+			        <figcaption>Iteration 4.</figcaption>
+			      </td>
+			      <td style="text-align: center;">
+			        <img src="bezier_5.png" width="400px"/>
+			        <figcaption>Iteration 5.</figcaption>
+			      </td>
+			      <td style="text-align: center;">
+			        <img src="bezier_6.png" width="400px"/>
+			        <figcaption>Final curve.</figcaption>
+			      </td>
+			      <td style="text-align: center;">
+			        <img src="bezier_7.png" width="400px"/>
+			        <figcaption>Moving control point.</figcaption>
+			      </td>
+		        </tr>
+		      </table>
+	      </div>
 
 		<h3>Part 2: Bezier surfaces with separable 1D de Casteljau</h3>
 	    De Casteljau’s algorithm is extended to bezier surface given a list of nxn control points and two parameters u, v. We implement the evaluation function by first iterating through lists of row coordinates vector. For each vector, we find the bezier points given the parameter u. After each row vector, we get a list of beizer points. Then we find the beizer point given parameter v. 
       
       <h4>Screenshots</h4>
+  		  <figure>
+	  		  <img src="bezier_surface.png" alt="Bezier Teapot" style="width:50%"/>
+		  	  <figcaption>Bezier surface teapot</figcaption>
+		    </figure>
+
 
     <h2>Section II: Triangle Meshes and Half-Edge Data Structure</h2>
 		
@@ -94,13 +109,43 @@
       The vertex normal variable now contains the sum of each triangle’s normal weighted by that triangle’s area. We then return the normalized form of this vector using .unit()
       
       <h4>Screenshots</h4>
-		
+	  		<div style="display: flex; flex-direction: column; align-items: center;">
+		    	<table style="width: 100%; text-align: center; border-collapse: collapse;">
+			      <tr>
+				    <td style="text-align: center;">
+				      <img src="flat_shading.png" width="400px"/>
+				      <figcaption>Flat shaded.</figcaption>
+				    </td>
+				    <td style="text-align: center;">
+				      <img src="phong_shading.png" width="400px"/>
+				      <figcaption>Phong shaded.</figcaption>
+				    </td>
+			      </tr>
+			    </table>
+		    </div>
+
+	
     <h3>Part 4: Edge flip</h3>
       We sketched out how the half edges change position, and then guided our code based on this sketch.
       The half edge and its twin originally start from vertex B and C respectively. We use the setNeighbours function to set the source vertices to instead be D and A respectively. Similarly, we also set the correct next half edge. The split causes DB and AC to be the next half edges respectively of DA and AD. Similarly, the half edges corresponding to the sides have to be set correctly, as the split removes half edges BC and CB. For the half edges corresponding to the sides of the quad, only the next edge and the face have to be set, the rest remain unchanged.
       Finally, we change the half edges of the faces to the flipped half edges, and set the half edges of the vertices to their corresponding new half edges.
       
       <h4>Screenshots</h4>
+	  		<div style="display: flex; flex-direction: column; align-items: center;">
+		    	<table style="width: 100%; text-align: center; border-collapse: collapse;">
+			      <tr>
+				    <td style="text-align: center;">
+				      <img src="flat_shading.png" width="400px"/>
+				      <figcaption>Before flips.</figcaption>
+				    </td>
+				    <td style="text-align: center;">
+				      <img src="after_flips.png" width="400px"/>
+				      <figcaption>After flips.</figcaption>
+				    </td>
+			      </tr>
+			    </table>
+		    </div>
+
 
       <h4>Debugging</h4>
         We spit out all the half edge, vertex and face information to aid with debugging in conjunction with the UI. The UI helped visualize while the debug prints gave deeper info on the underlying representation
@@ -115,21 +160,122 @@
         Using the abstraction above, handling boundary edges becomes straightforward. As we observed, boundary edges split across only one face. One edge is split into three instead of four, and one face into two faces instead of four. Using the is_boundary on the halfedge and its twin, we identify whether it is the “top” face or the “bottom” face that should be split on (depending on the orientation of the half edge corresponding to the edge). Then, we simply disable the parts of the code (using conditional statements) corresponding to creating/updating pointers specific to the face that is not required. The only difference however, is in assigning the neighbours of the half edges that are on the boundary face (aka the twins of the half edges of the edge being split). These half edges will need to be set to have the boundary face as its face, and its neighbour being the next corresponding boundary half edge.
 		
       <h4>Screenshots</h4>
-    
+ 	  		<div style="display: flex; flex-direction: column; align-items: center;">
+		    	<table style="width: 100%; text-align: center; border-collapse: collapse;">
+			      <tr>
+				    <td style="text-align: center;">
+				      <img src="no_splits.png" width="400px"/>
+				      <figcaption>No splits.</figcaption>
+				    </td>
+				    <td style="text-align: center;">
+				      <img src="only_splits.png" width="400px"/>
+				      <figcaption>Only splits.</figcaption>
+				    </td>
+			      </tr>
+				    <tr>
+				    <td style="text-align: center;">
+				      <img src="splits_and_flips.png" width="400px"/>
+				      <figcaption>Splits and flips.</figcaption>
+				    </td>
+				    <td style="text-align: center;">
+				      <img src="boundary_splits.png" width="400px"/>
+				      <figcaption>Boundary splits (extra credit).</figcaption>
+				    </td>
+			      </tr>
+			    </table>
+		    </div>
+
+   
     <h3>Part 6: Loop subdivision for mesh upsampling</h3>
       We implement loop subdivision by first by calculating the new vertices position for all the old vertices by equation specified in specs, and calculating the position for newly generated vertices and store them in the edge’s newposition field. After that, we perform splitedge and flip all the newly generated edge that connect one old vertex and one new vertex. At the end, update all the vertices to their new position. 
       Since we need to track what vertices and edges are newly generated, we customize the constructors for Vertex and Edge class to set isNew field to always true upon initialization. During the old edge and vertices traversal, we manually set isNew to false so that during flipEdge we don’t need to flip the newly generated edges. We also add one more field needFlip indicating that the edge that cuts the triangle instead of the edge that is spiltted by the original edge. After splitting, we only test the edges that have needFlip set instead of isNew. 
       Take icosahedron/input.dae as an example, loop division will split every triangle into 4 equal triangles. Sharp corner and sharp edges will be smoothed out because the updated vertices is the average of surrounding vertices. Pre-splitting edges will reduce the average effect since the new generated vertices is closer than the original vertices therefore the new averaging is closer to the original point. The example is the middle point, when pre-splitting the connecting edges, the point after loop division is closer to the original point (value in the y_axis). 
-      
+	  <div style="display: flex; flex-direction: column; align-items: center;">
+		<table style="width: 100%; text-align: center; border-collapse: collapse;">
+		  <tr>
+			<td style="text-align: center;">
+			  <img src="icosa_0.png" width="400px"/>
+			  <figcaption>Before.</figcaption>
+			</td>
+			<td style="text-align: center;">
+			  <img src="icosa_1.png" width="400px"/>
+			  <figcaption>After.</figcaption>
+			</td>
+			<td style="text-align: center;">
+			  <img src="icosa_2.png" width="400px"/>
+			  <figcaption>Pre splitting.</figcaption>
+			</td>
+			<td style="text-align: center;">
+			  <img src="icosa_3.png" width="400px"/>
+			  <figcaption>After.</figcaption>
+			</td>
+		  </tr>
+		</table>
+	</div>
+
+
       <h4>Screenshots</h4>
+	  <h5>Without pre splitting</h5>
+	  <div style="display: flex; flex-direction: column; align-items: center;">
+		<table style="width: 100%; text-align: center; border-collapse: collapse;">
+		  <tr>
+			<td style="text-align: center;">
+			  <img src="without_pre_0.png" width="400px"/>
+			</td>
+			<td style="text-align: center;">
+			  <img src="without_pre_1.png" width="400px"/>
+			</td>
+			<td style="text-align: center;">
+			  <img src="without_pre_2.png" width="400px"/>
+			</td>
+			<td style="text-align: center;">
+			  <img src="without_pre_3.png" width="400px"/>
+			</td>
+			<td style="text-align: center;">
+				<img src="without_pre_4.png" width="400px"/>
+			</td>
+		  </tr>
+		</table>
+	</div>
+
+	    <h5>With pre splitting</h5>
+		    <div style="display: flex; flex-direction: column; align-items: center;">
+		      <table style="width: 100%; text-align: center; border-collapse: collapse;">
+			      <tr>
+			      <td style="text-align: center;">
+				      <img src="with_pre_0.png" width="400px"/>
+			      </td>
+			      <td style="text-align: center;">
+			    	  <img src="with_pre_1.png" width="400px"/>
+			      </td>
+			      <td style="text-align: center;">
+				      <img src="with_pre_2.png" width="400px"/>
+			      </td>
+			      <td style="text-align: center;">
+				      <img src="with_pre_3.png" width="400px"/>
+			      </td>
+			      </tr>
+		      </table>
+		    </div>
 
       <h4>Extra Credit</h4>
       We implement loop division with boundary. We use different vertices update rules for boundary points. Specifically, for old boundary points, we first bound two neighbors A, B with whom the connecting edge is the boundary edge. And we update positions as follows:
       V' =1/ 8 (A+ B) + 3/4 V 
       For new generated points along the boundary edge, we only take the middle points of two vertifces on the edge. 
 
-      <h4>Screenshots</h4>
-
+      <h4>Screenshots: boundary vertices updated as expected</h4>
+	      <div style="display: flex; flex-direction: column; align-items: center;">
+	        <table style="width: 100%; text-align: center; border-collapse: collapse;">
+		        <tr>
+		        <td style="text-align: center;">
+			        <img src="boundary_ups_0.png" width="400px"/>
+		        </td>
+		        <td style="text-align: center;">
+			        <img src="boundary_ups_1.png" width="400px"/>
+		        </td>
+		        </tr>
+	        </table>
+	      </div>
 		</div>
 	</body>
 </html>

@@ -43,8 +43,7 @@
 		-->
 
 		<h2>Overview</h2>
-      In this homework we've explored bezier curves and triangle meshes. We implement bezier curve drawing, then worked on the half edge data strcture. We built up to mesh upsampling by implementing edge splitting and flipping.
-		<h2>Section I: Bezier Curves and Surfaces</h2>
+      In this homework, we've explored bezier curves and triangle mesh operations. We implemented bezier curve drawing and then worked on the half-edge data structure. We built up to mesh upsampling by implementing edge splitting and flipping. This project is helpful in getting familiar with curves and surfaces and common data structures/operations for manipulating the triangle meshes. 		<h2>Section I: Bezier Curves and Surfaces</h2>
 
 		<h3>Part 1: Bezier curves with 1D de Casteljau subdivision</h3>
       De Casteljau’s algorithm is used to generate intermediate and final points for Bezier curve. Given n control points and parameter t, it works by iteratively generating n-1 intermediate points until n - 1 = 1, which is the final point given t. Each intermediate point is generated using linear interpolation between two adjacent points in the previous iteration with the same parameter t. The final curve is the continuity of the final control point with parameter t in [0, 1].

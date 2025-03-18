@@ -93,18 +93,38 @@
 		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
 		<h2>(Optional) Part 6: Extra Credit Opportunities</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		<h3> Extra Credit 1: Better BVH splitting using surface area heuristic</h3>
+			To improve performance, we implemented a better BVH splitting algorithm using the surface area heuristic.
+			For each axis, we evaluate the best partition among all the primitives by iterating through the sorted list of primitives and calculating the cost of splitting at each primitive. The cost of splitting is equal to the cost of intersecting the left and right boxes. The cost of intersecting a box is equal to the probability of intersecting this box (proportional to the surface area) times the number of primitives in this box.
+			We minimize this cost for each axis, and pick the best cost among all three axes.
+			We skip straight to path tracing the 2048 sample bunny from Part 5:
+			<code> ./pathtracer -t 8 -s 2048 -a 64 0.05 -l 1 -m 5 -r 480 360 -f bunny.png ../dae/sky/CBbunny.dae </code>
+			We see a significant speedup in rendering time, going from 237 seconds without SAH splitting, to 154 seconds with SAH splitting, an approximately 35% improvement.
 		
-		<h2>Additional Notes (please remove)</h2>
-		<ul>
-			<li>You can also add code if you'd like as so: <code>code code code</code></li>
-			<li>If you'd like to add math equations, 
-				<ul>
-					<li>You can write inline equations like so: \( a^2 + b^2 = c^2 \)</li>
-					<li>You can write display equations like so: \[ a^2 + b^2 = c^2 \]</li>
-				</ul>
-			</li>
-		</ul>
+		<h3> Extra Credit 2 + 3: Optimizations </h3>
+			We perform the following optimizations: Replace recursion with stack traversal in bbox construction, z culling when sampling lights, and more optimized bbox and bvh tests. We mention them as 2 extra credits as they are two separate items in the extra credit list.
+			As above, we run the 2048 sample bunny from Part 5. We get a good spedup, rendering time going from 154 seconds with SAH splitting to 130 seconds with SAH splitting and optimizations, an approximately 15% improvement.
+
+		<h3> Extra Credit 4: Jittered Sampling </h3>
+			We create a new class of 2D Sampler called the JitteredSampler2D. During instantiation, an NxN grid is created, and we randomly sample a point inside this grid and store it. When calling sample(), we uniformly randomly generate i,j between [0,1] and use \((floor(i*N), floor(j*N))\) as the grid to pick the sample point from.
+			This provides us with a better distributed set of samples.
+
+			<div style="display: flex; flex-direction: column; align-items: center;">
+				<table style="width: 100%; text-align: center; border-collapse: collapse;">
+				  <tr>
+					<td style="text-align: center;">
+					  <img src="figs/part6/bunny.png" width="400px"/>
+					  <figcaption>Uniform random pixel sampling.</figcaption>
+					</td>
+					<td style="text-align: center;">
+					  <img src="figs/part6/bunny_jit.png" width="400px"/>
+					  <figcaption>Jittered sampling</figcaption>
+					</td>
+				  </tr>
+				</table>
+			</div>
+
+			The difference in the pictures above are not very apparent, but we can see upon zooming in that jittered sampling provides better fidelity and less aliasing along the edges of the bunny. Particularly, the ears and the eyes show noticeable difference.
 		</div>
 	</body>
 </html>

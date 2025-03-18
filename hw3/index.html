@@ -90,7 +90,37 @@
 		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
 		<h2>Part 5: Adaptive Sampling</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		Adaptive sampling attempts to generate noise free images by distributing samples over pixels depending on their convergence rate. We use more samples for difficult regions and fewer samples for "easier" regions.
+		In our implementation, we modify the raytrace_pixel function. Inside the sampling loop for each pixel, we add a termination check. This termination check is triggered every samplesPerBatch pixels, and terminates out of the loop early if the desired convergence rate has been achieved. We check for convergence using the described method in the Part 5 page: using the variance of samples so far and checking that \(1.96*\sqrt{\frac{\sigma}{n}} \leq maxTolerance*\mu\). When terminating early, we use the value of i as number of samples evaluated.
+		
+		We render 2048 samples of the bunny model and the wall-e model with the following commands:<br/>
+		<code> ./pathtracer -t 8 -s 2048 -a 64 0.05 -l 1 -m 5 -r 480 360 -f bunny.png ../dae/sky/CBbunny.dae </code> <br/>
+
+		<code> ./pathtracer -t 8 -s 2048 -a 64 0.05 -l 1 -m 5 -r 480 360 -f wall-e.png ../dae/sky/wall-e.dae </code> <br/>
+
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+			  <tr>
+				<td style="text-align: center;">
+				  <img src="figs/part5/bunny.png" width="400px"/>
+				  <figcaption>Bunny with 2048 samples</figcaption>
+				</td>
+				<td style="text-align: center;">
+				  <img src="figs/part5/bunny_rate.png" width="400px"/>
+				  <figcaption>Bunny sample heatmap</figcaption>
+				</td>
+			  </tr>
+			  <tr></tr>
+				<td style="text-align: center;">
+				  <img src="figs/part5/wall-e.png" width="400px"/>
+				  <figcaption>Wall-E with 2048 samples</figcaption>
+				</td>
+				<td style="text-align: center;">
+				  <img src="figs/part5/wall-e_rate.png" width="400px"/>
+				  <figcaption>Wall-E sample heatmap</figcaption>
+				</td>
+			  </tr>
+			</table>
 
 		<h2>(Optional) Part 6: Extra Credit Opportunities</h2>
 		<h3> Extra Credit 1: Better BVH splitting using surface area heuristic</h3>

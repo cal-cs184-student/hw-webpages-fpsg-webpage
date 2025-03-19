@@ -177,7 +177,76 @@
 
 
 		<h2>Part 3: Direct Illumination</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		<p>
+		For direct illumination with hemisphere sampling, when a ray first shot on a surface, we sample a direction on the hemisphere and generate reflected rays. If the reflected rays is intersecting with a surface in the scene, we calculate the radiance of the surface by multiplying the f in BRDF of the surface with input and output angle and the radiance of emission of the surface and the cosin of input ray with the surface norm. Then we divide this value to the pdf of the uniform sampling on the hemisphere 2 * pi. We accumulate <i>num_samples</i> of samples and take the average of the accumulated result. 
+		</p>
+		<p>
+		For direct lighting with importance sampling, we sample from a light source instead of a intersected surface. We calculated if the ray that shot from intersection point to the light source is intersecting other object. If yes, then it means the light is blocked. We then calculate the radiance of intersecting point by multiplying the emitted radiance of the light source with the f in BRDF and the cosin of the input ray with the surface norm. We divide this value by the pdf of the importance sampling. At the end we divided the sum by the number of samples.
+		</p> 
+
+		<h3>Screenshots</h3>
+		<p>
+		We use the following parameter for rendering
+		<code> ./pathtracer -t 8 -s 64 -l 32 -m 6 -f bunny_64_32.png -r 480 360 ../dae/sky/CBbunny.dae
+		</code>
+		And the result follows: 
+		</p>
+
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+				<tr>
+					<td style="text-align: center;">
+					  <img src="figs/part3/bunny_64_32.png" width="400px"/>
+					  <figcaption>CBbunny.dae w/ importance sampling</figcaption>
+					</td>
+					<td style="text-align: center;">
+					  <img src="figs/part3/bunny_H_64_32.png" width="400px"/>
+					  <figcaption>CBbunny.dae w/ uniform hemisphere sampling</figcaption>
+					</td>
+				  </tr>
+			  <tr></tr>
+			  <td style="text-align: center;">
+				<img src="figs/part3/spheres_64_32.png" width="400px"/>
+				<figcaption>CBspheres_lambertian.dae w/ importance sampling</figcaption>
+			  </td>
+			  <td style="text-align: center;">
+				  <img src="figs/part3/spheres_H_64_32.png" width="400px"/>
+				  <figcaption>CBspheres_lambertian.dae w/ uniform hemisphere sampling</figcaption>
+				</td>
+			  </tr>
+			</table>
+		<p>
+		We focus on CBbunny.dae and compare the light sampling diff. The less the ray, the noiser the image since there are less chance the light is not intersecting with the objects. If there's more samples, the more chance that the light can travel to that area. 
+		</p>
+
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+				<tr>
+					<td style="text-align: center;">
+					  <img src="figs/part3/bunny_1_1.png" width="400px"/>
+					  <figcaption>1 ray, 1 sample</figcaption>
+					</td>
+					<td style="text-align: center;">
+					  <img src="figs/part3/bunny_1_4.png" width="400px"/>
+					  <figcaption>4 ray, 1 sample</figcaption>
+					</td>
+				  </tr>
+			  <tr></tr>
+			  <td style="text-align: center;">
+				<img src="figs/part3/bunny_1_16.png" width="400px"/>
+				<figcaption>16 ray, 1 sample</figcaption>
+			  </td>
+			  <td style="text-align: center;">
+				  <img src="figs/part3/bunny_1_64.png" width="400px"/>
+				  <figcaption>64 ray, 1 sample</figcaption>
+				</td>
+			  </tr>
+			</table>
+		
+		<p>
+		As a comparison, for fixed nunber of sample per pixel, importance sampling will yield image with less noises since we are sampling more effectively. For hemisphere sampling, since there are some chances that we won't hit the light source, the image will be noiser. However, if we increase the sample rate, the image will be less noiser.
+		</p>
+		
 
 		<h2>Part 4: Global Illumination</h2>
 		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.

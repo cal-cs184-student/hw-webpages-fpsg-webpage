@@ -249,7 +249,210 @@
 		
 
 		<h2>Part 4: Global Illumination</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+		<p>
+		We implement the indirect light function by first test if we reach the maximum ray depth specified by the system parameter. If yes then we terminates. We then run russian roulette to determine if we want to stop at this depth. We then sample one f from BSDF along with the pdf and angle w_i. We then construct and test if the new ray is intersecting with the scene. If yes, we recursively call the indirect light function. We then calculate the radiance of the intersecting point by multiplying the f in BSDF with the radiance from one level deeper and the cosin of the input ray with the surface norm. We then divide this value by the pdf of the sampling as well as the russian roulette rate. Since we only sample bounce one time. We return directly with the radiance of the intersecting point. If not accumulating, we simply return with the value from radiance of the next bounce.
+		</p>
+
+		<p>
+		We then give several images rendered with global illumination. We use command
+		<code> ./pathtracer -t 8 -s 1024 -l 16 -m 5 -r 480 360 -f bunny.png ../dae/sky/CBbunny.dae
+		</code>
+		</p>
+
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+				<tr>
+					<td style="text-align: center;">
+					  <img src="figs/part4/spheres_global.png" width="400px"/>
+					  <figcaption>CBspheres_lambertian.dae</figcaption>
+					</td>
+					<td style="text-align: center;">
+					  <img src="figs/part4/bunny_global.png" width="400px"/>
+					  <figcaption>CBbunny.dae</figcaption>
+					</td>
+				  </tr>
+			  <tr></tr>
+			  <td style="text-align: center;">
+				<img src="figs/part4/bench.png" width="400px"/>
+				<figcaption>bench.dae</figcaption>
+			  </td>
+			  <td style="text-align: center;">
+				  <img src="figs/part4/blob.png" width="400px"/>
+				  <figcaption>blob.dae</figcaption>
+				</td>
+			  </tr>
+			</table>
+		
+		We then present CBspheres_lambertian.dae with direct illumination and indirect illumination separated. 
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+				<tr>
+					<td style="text-align: center;">
+					  <img src="figs/part4/spheres_direct.png" width="400px"/>
+					  <figcaption>Direct Illumination</figcaption>
+					</td>
+					<td style="text-align: center;">
+					  <img src="figs/part4/spheres_indirect.png" width="400px"/>
+					  <figcaption>Indirect Illumination</figcaption>
+					</td>
+				  </tr>
+			  <tr></tr>
+			  </tr>
+			</table>
+		
+		<p>
+		Here we present mth bounce of CBbunny.dae with various ray depth and not accumulate the ray. For m=2, thie layer of indirect illumination contribute to the overall quality of the image by providing the illumination on the bottom of the box, specifically the bottom of the back of the wall where the light reflect from the back of the bunny. For m=3, this light contribute to the overall image by provide reflection of the bunny on the wall. 
+		</p>
+
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+				<tr>
+					<td style="text-align: center;">
+					  <img src="figs/part4/bunny_0.png" width="400px"/>
+					  <figcaption>m=0</figcaption>
+					</td>
+					<td style="text-align: center;">
+					  <img src="figs/part4/bunny_1.png" width="400px"/>
+					  <figcaption>m=1</figcaption>
+					</td>
+					<td style="text-align: center;">
+						<img src="figs/part4/bunny_2.png" width="400px"/>
+						<figcaption>m=2</figcaption>
+					  </td>
+				  </tr>
+			  <tr></tr>
+			  <td style="text-align: center;">
+				<img src="figs/part4/bunny_3.png" width="400px"/>
+				<figcaption>m=3</figcaption>
+			  </td>
+			  <td style="text-align: center;">
+				  <img src="figs/part4/bunny_4.png" width="400px"/>
+				  <figcaption>m=4</figcaption>
+				</td>
+				<td style="text-align: center;">
+					<img src="figs/part4/bunny_5.png" width="400px"/>
+					<figcaption>m=5</figcaption>
+				  </td>
+			  </tr>
+			</table>
+		
+		<p>
+			Accumulated illumination with various ray depth of bunny. 
+		</p>
+
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+				<tr>
+					<td style="text-align: center;">
+					  <img src="figs/part4/bunny_0.png" width="400px"/>
+					  <figcaption>m=0</figcaption>
+					</td>
+					<td style="text-align: center;">
+					  <img src="figs/part4/bunny_1_g.png" width="400px"/>
+					  <figcaption>m=1</figcaption>
+					</td>
+					<td style="text-align: center;">
+						<img src="figs/part4/bunny_2_g.png" width="400px"/>
+						<figcaption>m=2</figcaption>
+					  </td>
+				  </tr>
+			  <tr></tr>
+			  <td style="text-align: center;">
+				<img src="figs/part4/bunny_3_g.png" width="400px"/>
+				<figcaption>m=3</figcaption>
+			  </td>
+			  <td style="text-align: center;">
+				  <img src="figs/part4/bunny_4_g.png" width="400px"/>
+				  <figcaption>m=4</figcaption>
+				</td>
+				<td style="text-align: center;">
+					<img src="figs/part4/bunny_global.png" width="400px"/>
+					<figcaption>m=5</figcaption>
+				  </td>
+			  </tr>
+			</table>
+
+		<p>
+			Accumulated illumination with various ray depth of bunny with russian roulette. 
+		</p>
+
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+				<tr>
+					<td style="text-align: center;">
+					  <img src="figs/part4/bunny_0.png" width="400px"/>
+					  <figcaption>m=0</figcaption>
+					</td>
+					<td style="text-align: center;">
+					  <img src="figs/part4/bunny_1_rr.png" width="400px"/>
+					  <figcaption>m=1</figcaption>
+					</td>
+					<td style="text-align: center;">
+						<img src="figs/part4/bunny_2_rr.png" width="400px"/>
+						<figcaption>m=2</figcaption>
+					  </td>
+				  </tr>
+			  <tr></tr>
+			  <td style="text-align: center;">
+				<img src="figs/part4/bunny_3_rr.png" width="400px"/>
+				<figcaption>m=3</figcaption>
+			  </td>
+			  <td style="text-align: center;">
+				  <img src="figs/part4/bunny_4_rr.png" width="400px"/>
+				  <figcaption>m=4</figcaption>
+				</td>
+				<td style="text-align: center;">
+					<img src="figs/part4/bunny_100_rr.png" width="400px"/>
+					<figcaption>m=100</figcaption>
+				  </td>
+			  </tr>
+			</table>
+	
+			
+		
+		<p>
+		We then present rendering view from different sample-per-pixel rate. We use CBspheres_lambertian.dae as an example. We use <i>max_ray_depth=5</i> and russian roulette.
+		</p>
+
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+				<tr>
+					<td style="text-align: center;">
+					  <img src="figs/part4/spheres_1_4.png" width="400px"/>
+					  <figcaption>4 ray, 1 sample</figcaption>
+					</td>
+					<td style="text-align: center;">
+					  <img src="figs/part4/spheres_2_4.png" width="400px"/>
+					  <figcaption>4 ray, 2 sample</figcaption>
+					</td>
+					<td style="text-align: center;">
+						<img src="figs/part4/spheres_4_4.png" width="400px"/>
+						<figcaption>4 ray, 4 sample</figcaption>
+					  </td>
+				  </tr>
+			  <tr></tr>
+			  <td style="text-align: center;">
+				<img src="figs/part4/spheres_8_4.png" width="400px"/>
+				<figcaption>4 ray, 8 sample</figcaption>
+			  </td>
+			  <td style="text-align: center;">
+				  <img src="figs/part4/spheres_16_4.png" width="400px"/>
+				  <figcaption>4 ray, 16 sample</figcaption>
+				</td>
+				<td style="text-align: center;">
+					<img src="figs/part4/spheres_64_4.png" width="400px"/>
+					<figcaption>4 ray, 64 sample</figcaption>
+				  </td>
+			  </tr>
+			  <tr></tr>
+			  <td style="text-align: center;">
+				<img src="figs/part4/spheres_1024_4.png" width="400px"/>
+				<figcaption>4 ray, 1024 sample</figcaption>
+			  </td>
+			  </tr>
+			</table>
+		
 
 		<h2>Part 5: Adaptive Sampling</h2>
 		Adaptive sampling attempts to generate noise free images by distributing samples over pixels depending on their convergence rate. We use more samples for difficult regions and fewer samples for "easier" regions.

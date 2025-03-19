@@ -52,10 +52,44 @@
 		Throughout the homework, the most important thing is to figure out what coordinate the vector lives in and do the proper transformation on that. Accumulating the correct numerical value when calculating the illumination is also important. 
 
 		<h2>Part 1: Ray Generation and Scene Intersection</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-
-		<p>Here is an example 2x2 gridlike structure using an HTML table. Each <b>tr</b> is a row and each <b>td</b> is a column in that row. You might find this useful for framing and showing your result images in an organized fashion.</p>
+		<p>
+		Since we need to generate a ray from every pixel in screen space, we first generate the direction of the ray by transforming pixel location to camera space. Once we get the direction vector, we further transform the ray into world space by multiplying the camera-to-world vector. 
+		</p>
+		<p>
+		Once we have a ray generation function, for each screen pixel, we randomly sample points within a grid and shoot a ray in that direction. Once we get the illumination of all the sampled locations, we average them and show the pixel color on the screen. 
+		</p>
+		<p>
+		We then calculate the intersection of a ray and a shape (triangle/sphere) in world space. For triangles, we use the Möller Trumbore Algorithm to calculate time t and barycentric coordinates for the intersection inside the triangle. For the sphere, we solve the quadratic equation that calculates two intersection points and chooses one that is closest to the ray center while within the range of valid t.
+		</p>
+		<p>
+		For triangle intersection cases, we use the Möller Trumbore Algorithm. Basically we model the point of intersection as a ray equation <b>p</b>= <b>o</b> + t<b>d</b> and the barycentric equation <b>p</b> = (1 - b_1 - b_2)<b>p1</b> + b1* <b>p2</b> + b2 * <b>p3</b>. So we have <b>o</b> + t<b>d</b> = (1 - b_1 - b_2)<b>p1</b> + b1* <b>p2</b> + b2 * <b>p3</b>. Since we have x,y,z three equations and t, b1, b2 three unknown variables. We can solve this system of equations. And we map them into the matrix form and solve it. 
+		</p>
+		<h3>Screenshots</h3>
 		<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+				<tr>
+					<td style="text-align: center;">
+					  <img src="figs/part1/bunny.png" width="400px"/>
+					  <figcaption>CBbunny.dae</figcaption>
+					</td>
+					<td style="text-align: center;">
+					  <img src="figs/part1/CBspheres.png" width="400px"/>
+					  <figcaption>CBspheres_lambertian.dae</figcaption>
+					</td>
+				  </tr>
+			  <tr></tr>
+			  <td style="text-align: center;">
+				<img src="figs/part1/cow.png" width="400px"/>
+				<figcaption>cow.dae</figcaption>
+			  </td>
+			  <td style="text-align: center;">
+				  <img src="figs/part1/building.png" width="400px"/>
+				  <figcaption>building.dae</figcaption>
+				</td>
+			  </tr>
+			</table>
+
+		<!-- <div style="display: flex; flex-direction: column; align-items: center;">
 			<table style="width: 100%; text-align: center; border-collapse: collapse;">
 			  <tr>
 				<td style="text-align: center;">
@@ -78,10 +112,69 @@
 				</td>
 			  </tr>
 			</table>
-		</div>
+		</div> -->
 		
 		<h2>Part 2: Bounding Volume Hierarchy</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		<p>
+		We describe a better BVH construction in the extra credit section. Here we only talk about the naive implementation. 
+		We construct all the primitives within a range [start, end) in a single bounding box. If the number of primitives fits within <i>max_leaf_size</i>, we terminate. If not, we find the longest axis of the bounding box and split it in the median location. We then split in the median location and recursively construct the child bounding box. 
+		</p>
+
+		<h3>Screenshots</h3>
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+				<tr>
+					<td style="text-align: center;">
+					  <img src="figs/part2/beast.png" width="400px"/>
+					  <figcaption>beast.dae</figcaption>
+					</td>
+					<td style="text-align: center;">
+					  <img src="figs/part2/lucy.png" width="400px"/>
+					  <figcaption>CBlucy.dae</figcaption>
+					</td>
+				  </tr>
+			  <tr></tr>
+			  <td style="text-align: center;">
+				<img src="figs/part2/mp.png" width="400px"/>
+				<figcaption>maxplanck.dae</figcaption>
+			  </td>
+			  <td style="text-align: center;">
+				  <img src="figs/part2/peter.png" width="400px"/>
+				  <figcaption>peter.dae</figcaption>
+				</td>
+			  </tr>
+			</table>
+			<p>
+			We measure the speedup for several meshes after implementing the BVH. For each meshes, we run with 8 threads and pixel size 800x600. The table belows shows that even implementing a naive BVH scheme can massive speed up the ray-scene intersection computation. 
+			</p>
+			
+
+			<table border="1" width="80%" style="font-size: 24px;">
+				<tr>
+					<th>Mesh</th>
+					<th>w/ BVH</th>
+					<th>w/o BVH</th>
+				</tr>
+				<tr>
+					<td>cow.dae</td>
+					<td>0.17s</td>
+					<td>8.08s</td>
+				</tr>
+				<tr>
+					<td>maxplanck.dae</td>
+					<td>0.49s</td>
+					<td>93.8s</td>
+				</tr>
+				<tr>
+					<td>CBlucy.dae</td>
+					<td>1.65s</td>
+					<td>241.58s</td>
+				</tr>
+				<caption><strong>Comparison of rendering time with BVH</strong></caption>
+			</table>
+
+		
+
 
 		<h2>Part 3: Direct Illumination</h2>
 		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.

@@ -28,20 +28,15 @@
 	<body>
 		<div class="container">
 		<h1>CS184/284A Spring 2025 Homework 4 Write-Up</h1>
-		<div style="text-align: center;">Names: </div>
+		<div style="text-align: center;">Names: Yongye Zhu, Shashank Anand</div>
 
 		<br>
 
-		Link to webpage: (TODO) <a href="https://cs184.eecs.berkeley.edu/sp25">cs184.eecs.berkeley.edu/sp25</a>
+		Link to webpage: <a href="https://cal-cs184-student.github.io/hw-webpages-fpsg-webpage/">https://cal-cs184-student.github.io/hw-webpages-fpsg-webpage/</a>
 
 		<br>
 
-		Link to GitHub repository: (TODO) <a href="https://cs184.eecs.berkeley.edu/sp25">cs184.eecs.berkeley.edu/sp25</a>
-
-		<figure>
-			<img src="clothsim.png" alt="Cloth draped over sphere" style="width:70%"/>
-			<figcaption>You can add images with captions!</figcaption>
-		</figure>
+		Link to GitHub repository:  <a href="https://github.com/cal-cs184-student/sp25-hw4-fpsg-hw4">https://github.com/cal-cs184-student/sp25-hw4-fpsg-hw4</a>
 
 		<!--
 		We've already added one heading per part, to make your write-up as navigable when grading. Please fit your write-up within these sections!
@@ -51,10 +46,48 @@
 		Give a high-level overview of what you implemented in this homework. Think about what you've built as a whole. Share your thoughts on what interesting things you've learned from completing the homework.
 
 		<h2>Part 1: Masses and springs</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-
-		<p>Here is an example 2x2 gridlike structure using an HTML table. Each <b>tr</b> is a row and each <b>td</b> is a column in that row. You might find this useful for framing and showing your result images in an organized fashion.</p>
+		<p>
+			Screenshots on scene/pinned2.json 
+		</p>
 		<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+			  <tr>
+				<td style="text-align: center;">
+				  <img src="figs/part1/pinned2-1.png" width="400px"/>
+				  <figcaption>One angle for pinned2</figcaption>
+				</td>
+				<td style="text-align: center;">
+				  <img src="figs/part1/pinned2-2.png" width="400px"/>
+				  <figcaption>One another angle for pinned2</figcaption>
+				</td>
+			  </tr>
+			</table>
+		</div>
+		<p>
+			We then show the detailed screenshots. 
+		</p>
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+			  <tr>
+				<td style="text-align: center;">
+				  <img src="figs/part1/no_shearing.png" width="400px"/>
+				  <figcaption>without any shearing constraints</figcaption>
+				</td>
+				<td style="text-align: center;">
+				  <img src="figs/part1/only_shearing.png" width="400px"/>
+				  <figcaption>with only shearing constraints</figcaption>
+				</td>
+				<td style="text-align: center;">
+					<img src="figs/part1/all_constraint.png" width="400px"/>
+					<figcaption>with all constraints</figcaption>
+				  </td>
+			  </tr>
+			</table>
+		</div>
+
+
+		
+		<!-- <div style="display: flex; flex-direction: column; align-items: center;">
 			<table style="width: 100%; text-align: center; border-collapse: collapse;">
 			  <tr>
 				<td style="text-align: center;">
@@ -77,13 +110,134 @@
 				</td>
 			  </tr>
 			</table>
-		</div>
+		</div> -->
 
 		<h2>Part 2: Simulation via numerical integration</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		<p>
+			Change spring constant ks will decrease all of the spring forces. So when spring forces are small, the majority of the forces are from the gravity and the cloth will be less tight. When it is big, the cloth will be more tight.
+			Here is the screenshots for various ks.
+		</p>
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+			  <tr>
+				<td style="text-align: center;">
+				  <img src="figs/part2/ks-100.png" width="400px"/>
+				  <figcaption>ks=10</figcaption>
+				</td>
+				<td style="text-align: center;">
+				  <img src="figs/part2/ks-100000.png" width="400px"/>
+				  <figcaption>ks=100000</figcaption>
+				</td>
+			  </tr>
+			</table>
+		</div>
+
+		<p>
+			Change the density will change the mass of the cloth. So when density is small, the majority of the forces are from spring force. So the cloth will be less tight. When the density is big, gravity will be the major force. So the cloth will fall down more. Here is the screenshots for various density.
+		</p>
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+			  <tr>
+				<td style="text-align: center;">
+				  <img src="figs/part2/density-1.png" width="400px"/>
+				  <figcaption>density=1</figcaption>
+				</td>
+				<td style="text-align: center;">
+				  <img src="figs/part2/density-1000.png" width="400px"/>
+				  <figcaption>density=1000</figcaption>
+				</td>
+			  </tr>
+			</table>
+		</div>
+
+		<p>
+			Change the damping coefficient will change the energy loss due to friction. So whe the damping coefficient is small, the cloth will swing around. But when damping coefficient is large, the cloth will fall down slowly because the displacement from pm.last_position to pm.position is scaled down and stop swinging as soon as it falls. Here is the screenshots for various damping coefficient.
+		</p>
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+			  <tr>
+				<td style="text-align: center;">
+				  <img src="figs/part2/damping-0-1.png" width="400px"/>
+				</td>
+				<td style="text-align: center;">
+				  <img src="figs/part2/damping-0-2.png" width="400px"/>
+				</td>
+				<td style="text-align: center;">
+					<img src="figs/part2/damping-0-3.png" width="400px"/>
+				  </td>
+			  </tr>
+			  <caption><strong>Series of screenshot when damping=0</strong></caption>
+			</table>
+		</div>
+
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+			  <tr>
+				<td style="text-align: center;">
+				  <img src="figs/part2/damping-50-1.png" width="400px"/>
+				</td>
+				<td style="text-align: center;">
+				  <img src="figs/part2/damping-50-2.png" width="400px"/>
+				</td>
+				<td style="text-align: center;">
+					<img src="figs/part2/damping-50-3.png" width="400px"/>
+				  </td>
+			  </tr>
+			  <caption><strong>Series of screenshot when damping=50</strong></caption>
+			</table>
+		</div>
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+			  <tr>
+				<td style="text-align: center;">
+				  <img src="figs/part2/pinned4.png" width="400px"/>
+				  <figcaption>scene/pinned4</figcaption>
+				</td>
+			</table>
+		</div>
 
 		<h2>Part 3: Handling collisions with other objects</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		We perfornm collision with the sphere by checking if the current position is in the sphere by comparing the distance between the center and the current position and the radius. If it is in the sphere, we calculating the correction vector and add the scaled to the last position. We perform the plane collision to check if vector between last position and the current position has across the plane. If it is, thet will have different sign for the dot product between the surface normal and vector between position and the point on the plane. We then calculating the correction vector by scale the difference between the current position and the last position with their dot product with the surface norm. We than apply surface_offset on the direction of correction vector and add the friction scaled valuue to the last position. 
+
+		<p>
+			Screenshots: 
+		</p>
+
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+			  <tr>
+				<td style="text-align: center;">
+				  <img src="figs/part3/sphere_ks_5000.png" width="400px"/>
+				  <figcaption>ks=500</figcaption>
+				</td>
+				<td style="text-align: center;">
+				  <img src="figs/part3/sphere_ks_500.png" width="400px"/>
+				  <figcaption>ks=5000</figcaption>
+				</td>
+				<td style="text-align: center;">
+					<img src="figs/part3/sphere_ks_50000.png" width="400px"/>
+					<figcaption>ks=50000</figcaption>
+				  </td>
+			  </tr>
+			</table>
+		</div>
+
+		<p>
+			Compare these screenshots. When ks is low, the cloth is loose and will be covered on the sphere without any movement. When ks is high, cloth is tight and will slowly slide off the sphere due to inbalance of weights. 
+		</p>
+
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+			  <tr>
+				<td style="text-align: center;">
+				  <img src="figs/part3/plane.png" width="400px"/>
+				  <figcaption>Shaded Plane</figcaption>
+				</td>
+			</table>
+		</div>
+
+
+		
 
 		<h2>Part 4: Handling self-collisions</h2>
 		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.

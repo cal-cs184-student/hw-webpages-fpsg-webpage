@@ -43,8 +43,7 @@
 		-->
 
 		<h2>Overview</h2>
-		Give a high-level overview of what you implemented in this homework. Think about what you've built as a whole. Share your thoughts on what interesting things you've learned from completing the homework.
-
+    We built a cloth simulator + shaders for this simulator over the course of this homework. First we learned to build masses and springs, use verlet integration to simulate, then compute object-object and self collisions, and build acceleration structures for these self collisions. Finally we experimented with different shaders to add surface effects to the objects we simulated.
 		<h2>Part 1: Masses and springs</h2>
 		<p>
 			Screenshots on scene/pinned2.json 
@@ -240,24 +239,140 @@
 		
 
 		<h2>Part 4: Handling self-collisions</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+    First, we build a hash map of positions. We hash a point mass' position by getting each point mass' box by dividing each coordinate with w,h,t respectively, and subsequently combining them with \(.x * 124195915 + y * 2345678 + z * 1234567\).
+    Once the hash map is constructed, for each point mass we check collision against all the point masses in hashMap[hash(point_mass)], as in the only point masses in its 3D volume. If they are \(2*thickness\) apart, apply the correction.
 
-		<h2>Part 5: Shaders</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-
-		<h2>(Optional) Part 6: Extra Credit - Additional cloth simulation features!</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-		
-		<h2>Additional Notes (please remove)</h2>
-		<ul>
-			<li>You can also add code if you'd like as so: <code>code code code</code></li>
-			<li>If you'd like to add math equations, 
-				<ul>
-					<li>You can write inline equations like so: \( a^2 + b^2 = c^2 \)</li>
-					<li>You can write display equations like so: \[ a^2 + b^2 = c^2 \]</li>
-				</ul>
-			</li>
-		</ul>
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+			  <tr>
+				<td style="text-align: center;">
+				  <img src="figs/part4/sim1.png" width="400px"/>
+				  <figcaption>Initial</figcaption>
+				</td>
+				<td style="text-align: center;">
+				  <img src="figs/part4/sim2.png" width="400px"/>
+				  <figcaption>Middle</figcaption>
+				</td>
+				<td style="text-align: center;">
+					<img src="figs/part4/sim3.png" width="400px"/>
+					<figcaption>Rest</figcaption>
+				  </td>
+			  </tr>
+			</table>
 		</div>
+
+    At high density, the cloth "wrinkles" when falling down. This is because force from gravity is higher, therefore the point masses rebound strongly and irregularly. At low density, the cloth acts more like a scarf, it falls gently on itself in layers.
+    At high Ks, spring force is strong therefore the cloth more or less maintains shape when it falls on itself, like a rug. With low Ks, the spring forces are weak and the cloth wrinkles up a lot more, like silk.
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+			  <tr>
+				<td style="text-align: center;">
+				  <img src="figs/part4/lowks.png" width="400px"/>
+				  <figcaption>Ks=1</figcaption>
+				</td>
+				<td style="text-align: center;">
+				  <img src="figs/part4/highks.png" width="400px"/>
+				  <figcaption>Ks=10000</figcaption>
+				</td>
+				<td style="text-align: center;">
+					<img src="figs/part4/lowd.png" width="400px"/>
+					<figcaption>d=1</figcaption>
+				</td>
+	      <td style="text-align: center;">
+					<img src="figs/part4/highd.png" width="400px"/>
+					<figcaption>d=1500</figcaption>
+				</td>
+		    </tr>
+			</table>
+		</div>	
+    <h2>Part 5: Shaders</h2>
+    Shaders are GPU programs that all run in parallel, taking in compile time fixed input buffers and writing to fixed output buffers. Vertex shaders apply geometric transforms to vertices, and fragment shaders compute a color per pixel taking in a fragment input.
+
+    The Blinn-Phong model attempts to approximate light effects on a surface by combining ambient lighting (scattered light independent of direction), diffuse lightiing (light reflecting evenly off the surface) and specular lighting (shiny blips on reflective surfaces). They are computed and combined using material specific properties.
+
+    <div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+			  <tr>
+				<td style="text-align: center;">
+				  <img src="figs/part5/phong.png" width="400px"/>
+				  <figcaption>Full Blinn-Phong</figcaption>
+				</td>
+				<td style="text-align: center;">
+				  <img src="figs/part5/ambient.png" width="400px"/>
+				  <figcaption>Only Ambient</figcaption>
+				</td>
+				<td style="text-align: center;">
+					<img src="figs/part5/diffuse.png" width="400px"/>
+					<figcaption>Only Diffuse</figcaption>
+				</td>
+	      <td style="text-align: center;">
+					<img src="figs/part5/specular.png" width="400px"/>
+					<figcaption>Only Specular</figcaption>
+				</td>
+		    </tr>
+			</table>
+		</div>	
+
+    <div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+			  <tr>
+				<td style="text-align: center;">
+				  <img src="figs/part5/texture.png" width="400px"/>
+				  <figcaption>Texture mapping shader</figcaption>
+				</td>
+				<td style="text-align: center;">
+				  <img src="figs/part5/mirror_cloth.png" width="400px"/>
+				  <figcaption>Mirror Cloth</figcaption>
+				</td>
+				<td style="text-align: center;">
+					<img src="figs/part5/mirror_sphere.png" width="400px"/>
+					<figcaption>Mirror Sphere</figcaption>
+				</td>
+		    </tr>
+			</table>
+		</div>	
+
+    <div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+			  <tr>
+				<td style="text-align: center;">
+				  <img src="figs/part5/bump_cloth.png" width="400px"/>
+				  <figcaption>Bump mapping cloth</figcaption>
+				</td>
+				<td style="text-align: center;">
+				  <img src="figs/part5/bump_sphere.png" width="400px"/>
+				  <figcaption>Bump mapping sphere</figcaption>
+				</td>
+				<td style="text-align: center;">
+					<img src="figs/part5/displacement.png" width="400px"/>
+					<figcaption>Displacement mapping sphere</figcaption>
+		    </tr>
+			</table>
+		</div>	
+
+    At 16,16 both bump and displacement mapping look slightly blurrier that their 128,128 counterparts. It is sort of difficult to see in the picture, perhaps because of the texture I chose. It seems that the bumps become smoother and the deformations become clearer at 128, 128.
+    <div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+			  <tr>
+				<td style="text-align: center;">
+				  <img src="figs/part5/bump16.png" width="400px"/>
+				  <figcaption>Bump 16, 16</figcaption>
+				</td>
+				<td style="text-align: center;">
+				  <img src="figs/part5/bump128.png" width="400px"/>
+				  <figcaption>Bump 128, 128</figcaption>
+				</td>
+				<td style="text-align: center;">
+					<img src="figs/part5/displacement16.png" width="400px"/>
+					<figcaption>Displacement 16, 16</figcaption>
+				</td>
+	      <td style="text-align: center;">
+					<img src="figs/part5/displacement128.png" width="400px"/>
+					<figcaption>Displacement 128, 128</figcaption>
+				</td>
+		    </tr>
+			</table>
+		</div>	
+
 	</body>
 </html>

@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="description"
-        content="Ray Tracing Pipeline with Radiance GPU">
+        content="Neural Pathtracing with CUDA">
   <meta name="keywords" content="raytrace, GPU, pipeline">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Ray Tracing Pipeline with Radiance GPU</title>
+  <title>Neural Pathtracing with CUDA</title>
 
   <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
         rel="stylesheet">
@@ -44,7 +44,7 @@
     <div class="container is-max-desktop">
       <div class="columns is-centered">
         <div class="column has-text-centered">
-          <h1 class="title is-1 publication-title">Ray Tracing Pipeline with Radiance GPU</h1>
+          <h1 class="title is-1 publication-title">Neural Pathtracing with CUDA</h1>
           <div class="is-size-5 publication-authors">
             <span class="author-block">
               Shashank Anand,</span>
@@ -66,7 +66,7 @@
             <div class="publication-links">
               <!-- PDF Link. -->
               <span class="link-block">
-                <a href="https://arxiv.org/pdf/2011.12948"
+                <a href="./static/pdf/final_report.pdf"
                    class="external-link button is-normal is-rounded is-dark">
                   <span class="icon">
                       <i class="fas fa-file-pdf"></i>
@@ -75,7 +75,7 @@
                 </a>
               </span>
               <!-- Video Link. -->
-              <span class="link-block">
+              <!-- <span class="link-block">
                 <a href="https://www.youtube.com/watch?v=MrKrnHhk8IA"
                    class="external-link button is-normal is-rounded is-dark">
                   <span class="icon">
@@ -83,9 +83,9 @@
                   </span>
                   <span>Video</span>
                 </a>
-              </span>
+              </span> -->
               <!-- Code Link. -->
-              <span class="link-block">
+              <!-- <span class="link-block">
                 <a href="https://github.com/google/nerfies"
                    class="external-link button is-normal is-rounded is-dark">
                   <span class="icon">
@@ -93,7 +93,7 @@
                   </span>
                   <span>Code</span>
                   </a>
-              </span>
+              </span> -->
             </div>
 
           </div>
@@ -111,65 +111,148 @@
         <table style="width: 100%; text-align: center; border-collapse: collapse;">
           <tr>
           <td style="text-align: center;">
-            <img src="../hw4/figs/part1/all_constraint.png" width="400px"/>
-            <figcaption>maxplanck.dae</figcaption>
+            <video id="teaser" autoplay muted loop playsinline height="100%">
+              <source src="./videos/ReSTIRGI/ChessCube_1200_fp32.mp4"
+                      type="video/mp4">
+            </video>
+            <figcaption>ReSTIR GI raw 1200x1200</figcaption>
           </td>
           <td style="text-align: center;">
-            <img src="../hw4/figs/part1/all_constraint.png" width="400px"/>
-            <figcaption>maxplanck.dae</figcaption>
+            <video id="teaser" autoplay muted loop playsinline height="100%">
+              <source src="./videos/ReSTIRGI/ChessCube_1200_fp32_denoised.mp4"
+                      type="video/mp4">
+            </video>
+            <figcaption>ReSTIR GI denoised 1200x1200</figcaption>
+          </td>
+          </tr>
+        </table>
+      </div>
+
+      <h2 class="subtitle has-text-centered">
+        24fps with 400 images for Cornell Box Chess
+      </h2>
+
+      <div style="display: flex; flex-direction: column; align-items: center;">
+        <table style="width: 100%; text-align: center; border-collapse: collapse;">
+          <tr>
+          <td style="text-align: center;">
+            <video id="teaser" autoplay muted loop playsinline height="100%">
+              <source src="./videos/ReSTIRGI/ChessCube_bright_1200.mp4"
+                      type="video/mp4">
+            </video>
+            <figcaption>ReSTIR GI raw 1200x1200</figcaption>
           </td>
           <td style="text-align: center;">
-            <img src="../hw4/figs/part1/all_constraint.png" width="400px"/>
-            <figcaption>maxplanck.dae</figcaption>
-            </td>
+            <video id="teaser" autoplay muted loop playsinline height="100%">
+              <source src="./videos/ReSTIRGI/ChessCube_bright_1200_denoised.mp4"
+                      type="video/mp4">
+            </video>
+            <figcaption>ReSTIR GI denoised 1200x1200</figcaption>
+          </td>
+          </tr>
+        </table>
+      </div>
+
+      <h2 class="subtitle has-text-centered">
+        24fps with 400 images for raw Chessboard and brighter light (see mirror reflections)
+      </h2>
+
+      <div style="display: flex; flex-direction: column; align-items: center;">
+        <table style="width: 100%; text-align: center; border-collapse: collapse;">
+          <tr>
+          <td style="text-align: center;">
+            <video id="teaser" autoplay muted loop playsinline height="100%">
+              <source src="./videos/ReSTIRGI/Chess_1200_fp32.mp4"
+                      type="video/mp4">
+            </video>
+            <figcaption>ReSTIR GI raw 1200x1200</figcaption>
+          </td>
+          <td style="text-align: center;">
+            <video id="teaser" autoplay muted loop playsinline height="100%">
+              <source src="./videos/ReSTIRGI/Chess_1200_fp32_denoised.mp4"
+                      type="video/mp4">
+            </video>
+            <figcaption>ReSTIR GI denoised 1200x1200</figcaption>
+          </td>
+          </tr>
+        </table>
+      </div>
+
+      <h2 class="subtitle has-text-centered">
+        24fps with 400 images for raw Chessboard
+      </h2>
+
+      <div style="display: flex; flex-direction: column; align-items: center;">
+        <table style="width: 100%; text-align: center; border-collapse: collapse;">
+          <tr>
+          <td style="text-align: center;">
+            <img src="./images/Naive/ChessCube_1200.png" width="400px"/>
+            <figcaption>Naive 1spp raw 1200x1200 (200ms)</figcaption>
+          </td>
+          <td style="text-align: center;">
+            <img src="./images/Naive/ChessCube_1200_denoised.png" width="400px"/>
+            <figcaption>Naive 1spp denoised 1200x1200</figcaption>
+          </td>
+          <td style="text-align: center;">
+            <img src="./images/ReSTIRGI/ChessCube_1200.png" width="400px"/>
+            <figcaption>ReSTIR GI raw 1200x1200 (240ms)</figcaption>
+          </td>
+          <td style="text-align: center;">
+            <img src="./images/ReSTIRGI/ChessCube_1200_denoised.png" width="400px"/>
+            <figcaption>ReSTIR GI denoised 1200x1200</figcaption>
+          </td>
+          </tr>
+        </table>
+      </div>
+
+      <div style="display: flex; flex-direction: column; align-items: center;">
+        <table style="width: 100%; text-align: center; border-collapse: collapse;">
+          <tr>
+          <td style="text-align: center;">
+            <img src="./images/Naive/ChessCube_400.png" width="400px"/>
+            <figcaption>Naive 1spp raw 400x400</figcaption>
+          </td>
+          <td style="text-align: center;">
+            <img src="./images/Naive/ChessCube_400_denoised.png" width="400px"/>
+            <figcaption>Naive 1spp denoised 400x400</figcaption>
+          </td>
+          <td style="text-align: center;">
+            <img src="./images/ReSTIRGI/ChessCube_400.png" width="400px"/>
+            <figcaption>ReSTIR GI raw 400x400 </figcaption>
+          </td>
+          <td style="text-align: center;">
+            <img src="./images/ReSTIRGI/ChessCube_400_denoised.png" width="400px"/>
+            <figcaption>ReSTIR GI denoised 400x400</figcaption>
+          </td>
           </tr>
         </table>
       </div>
       <h2 class="subtitle has-text-centered">
-        Videos and images with various resolution
+        Chessboard in Cornell Box with Naive method and RsSTIR GI 
       </h2>
+
+
     </div>
   </div>
 </section>
 
-<!-- <section class="section">
+<section class="section">
   <div class="container is-max-desktop">
     <div class="columns is-centered has-text-centered">
       <div class="column is-four-fifths">
         <h2 class="title is-3">Abstract</h2>
         <div class="content has-text-justified">
-          <p>
-            We present the first method capable of photorealistically reconstructing a non-rigidly
-            deforming scene using photos/videos captured casually from mobile phones.
-          </p>
-          <p>
-            Our approach augments neural radiance fields
-            (NeRF) by optimizing an
-            additional continuous volumetric deformation field that warps each observed point into a
-            canonical 5D NeRF.
-            We observe that these NeRF-like deformation fields are prone to local minima, and
-            propose a coarse-to-fine optimization method for coordinate-based models that allows for
-            more robust optimization.
-            By adapting principles from geometry processing and physical simulation to NeRF-like
-            models, we propose an elastic regularization of the deformation field that further
-            improves robustness.
-          </p>
-          <p>
-            We show that <span class="dnerf">Nerfies</span> can turn casually captured selfie
-            photos/videos into deformable NeRF
-            models that allow for photorealistic renderings of the subject from arbitrary
-            viewpoints, which we dub <i>"nerfies"</i>. We evaluate our method by collecting data
-            using a
-            rig with two mobile phones that take time-synchronized photos, yielding train/validation
-            images of the same pose at different viewpoints. We show that our method faithfully
-            reconstructs non-rigidly deforming scenes and reproduces unseen views with high
-            fidelity.
-          </p>
+          We present a fully-featured, CUDA-accelerated, one-sample-per-pixel path tracer that combines ReSTIR GI's spatio-temporal reservoir resampling with OIDN GPU-accelerated denoising to generate stable, noise-free indirect illumination and reflections in complex glTF scenes. 
+          We implement a lightweight GLTF loader, and support the complete base GLTF feature set, in addition to a number of extensions. 
+          We utilize the PBR rendering model, supporting textures, normal maps, roughness maps, metallic maps, and emission maps. 
+          We also support rendering multiple frames at different camera angles in one go, taking full advantage of the temporal resampling step. 
+          On an RTX 2000 GPU, we render a single 400x400 frame of a scene with 1.5 million primitives simulating 10 bounces of light, in 30ms, producing &approx; 33 frames per second. 
+          We render a high fidelity 1200x1200 frame in approximately 200ms, achieving near-realistic quality. 
         </div>
       </div>
     </div>
 
-    <div class="columns is-centered has-text-centered">
+    <!-- <div class="columns is-centered has-text-centered">
       <div class="column is-four-fifths">
         <h2 class="title is-3">Video</h2>
         <div class="publication-video">
@@ -177,9 +260,9 @@
                   frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
-</section> -->
+</section>
 
 <footer class="footer">
   <div class="container">
